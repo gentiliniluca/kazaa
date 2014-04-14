@@ -1,12 +1,7 @@
 import Connessione
-import FileService
-import NearService
-import PacketService
 import os
-import SearchResultService
 import socket
 import Util
-
 import sys
 
 from signal import signal, SIGPIPE, SIG_DFL
