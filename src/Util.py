@@ -15,11 +15,14 @@ class Util:
     global TTL
     TTL = 2
     
+    global USEMODE
+    USEMODE=""
+    
     global MAX_NEARS
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/luca/Desktop/kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/lorenzo/Desktop/kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):
