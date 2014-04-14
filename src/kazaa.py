@@ -7,6 +7,14 @@ import signal
 class Gnutella:
     
     print("Avvio kazaa")
+    while True:
+        print ("Si vuole avviare il programma in:")
+        print("\t 1. Modalita PEER")
+        print("\t 2. Modalita SUPER-PEER")
+        out=raw_input("\n\tOperazione scelta: ")
+        if(int(out) >= 1 and int(out) <= 2):
+                break
+        print("Valore inserito errato! (valore compreso tra 1 e 2)")
     
     pid = os.fork()
     if(pid == 0): #figlio per gestire operazioni menu
