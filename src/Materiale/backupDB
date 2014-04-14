@@ -72,9 +72,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `kazaa`.`file_has_peer`
+-- Table `kazaa`.`peer_has_file`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `kazaa`.`file_has_peer` (
+CREATE  TABLE IF NOT EXISTS `kazaa`.`peer_has_file` (
   `file_filemd5` CHAR(16) NOT NULL ,
   `peer_sessionid` CHAR(16) NOT NULL ,
   PRIMARY KEY (`file_filemd5`, `peer_sessionid`) ,
