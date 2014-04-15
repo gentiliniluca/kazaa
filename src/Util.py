@@ -3,12 +3,12 @@ import hashlib
 class Util:
     
     global HOST
-    HOST = "::1"#1dd3:234b:b49a:d734"
+    HOST = "fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
     global PORT
-    PORT = 3331
+    PORT = 3332
     
     global IPSuperPeer
-    IPSuperPeer="::1"
+    IPSuperPeer="fd00:0000:0000:0000:c521:ae1e:ea72:8fc0"
     
     global PORTSuperPeer
     PORTSuperPeer=8000

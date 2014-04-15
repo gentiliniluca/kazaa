@@ -3,6 +3,9 @@ import random
 import socket
 import string
 import Util
+import SharedFile
+import SharedFileService
+
 
 from signal import signal, SIGPIPE, SIG_DFL
 signal(SIGPIPE,SIG_DFL)
@@ -48,8 +51,8 @@ class Client:
     def logout(SessionID):
         print(SessionID+"nel logout")
         if(SessionID != "" and SessionID != "0000000000000000"):
-            #stringa_da_trasmettere="LOGO"+SessionID
-            print("str da trasmeteer" +stringa_da_trasmettere)
+            stringa_da_trasmettere="LOGO"+SessionID
+            print("str da trasmeteer"+stringa_da_trasmettere)
             try:
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer) ))
@@ -71,10 +74,10 @@ class Client:
             conn_db = Connessione.Connessione()
             nomefile = raw_input("Inserire il nome del file: " + Util.LOCAL_PATH)
             filemd5 = Util.Util.get_md5(Util.LOCAL_PATH + nomefile)
-            print("md5: " + filemd5 + " nome: " + nomefile)
+            print("md5: " + filemd5+"lunghezza: "+str(len(filemd5))+ "nome: " + nomefile)
             file = SharedFileService.SharedFileService.insertNewSharedFile(conn_db.crea_cursore(), filemd5, nomefile)
             
-        except Excpetion as e:
+        except Exception as e:
             print e
             print("Errore aggiunta file")
         
@@ -84,7 +87,7 @@ class Client:
         
         #formatto e invio stringa di aggiunta file nel superpeer    
         try:
-            nomefile = Util.Util.aggiungi_spazi_finali(nomefile,100)
+            #nomefile = Util.Util.aggiungi_spazi_finali(nomefile,100)
             stringa_da_inviare="ADFF"+SessionID+filemd5+nomefile
             print(stringa_da_inviare)
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
