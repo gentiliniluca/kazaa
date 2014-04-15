@@ -28,7 +28,7 @@ class GestionePeer:
                 
                 #carica file
                 if(int(operazione_utente) == 3):            
-                    Client.Client.addFile()
+                    Client.Client.addFile(SessionID)
                     
                 #download file
                 if(int(operazione_utente) == 4):            
@@ -36,7 +36,7 @@ class GestionePeer:
                     
                 #rimuovi file
                 if(int(operazione_utente) == 5):            
-                    Client.Client.deleteFile()
+                    Client.Client.deleteFile(SessionID)
                     
                 #logout
                 if(int(operazione_utente) == 6):            

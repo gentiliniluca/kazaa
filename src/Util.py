@@ -16,7 +16,7 @@ class Util:
     global USERNAME
     USERNAME = "root"
     global PASSWORD
-    PASSWORD = "lucaluca"
+    PASSWORD = "lorenzo91"
     
     global TTL
     TTL = 2
@@ -28,7 +28,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/luca/Desktop/kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/lorenzo/Desktop/kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):
