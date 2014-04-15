@@ -13,13 +13,34 @@ class GestionePeer:
         pid = os.fork()
         if(pid == 0): #figlio per gestire operazioni menu
             operazione_utente = 1
+            SessionID=" "
             while(int(operazione_utente) != 0):
                 operazione_utente = Client.Client.visualizza_menu_principale()
-                print("Valore: " + operazione_utente)
-            
+                #print("Valore: " + str(operazione_utente) +" per il sessionID= "+SessionID)
+                           
                 #ricerca file
                 if(int(operazione_utente) == 1):            
                     Client.Client.searchHandler()
+                    
+                #login
+                if(int(operazione_utente) == 2):            
+                    SessionID=Client.Client.login(SessionID)
+                
+                #carica file
+                if(int(operazione_utente) == 3):            
+                    Client.Client.addFile()
+                    
+                #download file
+                if(int(operazione_utente) == 4):            
+                    Client.Client.downloadFile()
+                    
+                #rimuovi file
+                if(int(operazione_utente) == 5):            
+                    Client.Client.deleteFile()
+                    
+                #logout
+                if(int(operazione_utente) == 6):            
+                    SessionID=Client.Client.logout(SessionID)
        
             print("Fine operazioni utente")
             #pulisco DB quando esco
