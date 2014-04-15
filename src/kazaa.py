@@ -19,11 +19,12 @@ class Kazaa:
         
     
     if(int(out)==1):
+        Util.USEMODE="PEER"
         GestionePeer.GestionePeer.PeerManagement()
-        USEMODE="PEER"
     else:
+        Util.USEMODE="SUPERPEER"
         GestioneSuperpeer.GestioneSuperpeer.SuperpeerManagement()
-        USEMODE="SUPERPEER"
+        
 
 
 #    pid = os.fork()

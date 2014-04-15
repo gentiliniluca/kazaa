@@ -7,6 +7,12 @@ class Util:
     global PORT
     PORT = 3331
     
+    global IPSuperPeer
+    IPSuperPeer="::1"
+    
+    global PORTSuperPeer
+    PORTSuperPeer=8000
+        
     global USERNAME
     USERNAME = "root"
     global PASSWORD
@@ -17,7 +23,7 @@ class Util:
     
     global USEMODE
     USEMODE=""
-    
+        
     global MAX_NEARS
     MAX_NEARS = 2
     
