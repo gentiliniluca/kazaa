@@ -48,7 +48,7 @@ class Client:
     def logout(SessionID):
         print(SessionID+"nel logout")
         if(SessionID != "" and SessionID != "0000000000000000"):
-            stringa_da_trasmettere="LOGO"+SessionID
+            #stringa_da_trasmettere="LOGO"+SessionID
             print("str da trasmeteer" +stringa_da_trasmettere)
             try:
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
