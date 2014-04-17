@@ -138,3 +138,24 @@ class Client:
         except Exception as e:
             print e
             print"Errore nel contattare il superpeer nell'eliminazione del file"
+            
+    @staticmethod 
+    def searchHandler(SessionID):
+        while True:
+            query_ricerca = raw_input("\n\tInserire la stringa di ricerca (massimo 20 caratteri): ")
+            if(len(query_ricerca) <= 20):
+                break
+            print("\n\tErrore lunghezza query maggiore di 20!")
+        query_ricerca = Util.Util.riempi_stringa(query_ricerca, 20)
+        stringa_da_trasmettere="FIND"+SessionID+query_ricerca
+        print "Invio supernodo: "+stringa_da_trasmettere
+        
+        try:
+            sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+            sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer)) )
+            sock.send(stringa_da_trasmettere.encode())
+            sock.close()
+            
+        except Exception as e:
+            print e
+            print"Errore nel contattare il supernodo per ricerca file"
