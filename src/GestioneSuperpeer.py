@@ -1,4 +1,5 @@
 import Client 
+import Connessione
 import Server 
 import Util
 import os
@@ -10,57 +11,79 @@ class GestioneSuperpeer:
     def SuperpeerManagement():
         print("\nAvvio come SuperPeer")
         
-        pid = os.fork()
-        if(pid == 0): #figlio per gestire operazioni menu
-            operazione_utente = 1
-            while(int(operazione_utente) != 0):
-                operazione_utente = Client.Client.visualizza_menu_principale()
-                print("Valore: " + operazione_utente)
+        #pid = os.fork()
+        #if(pid == 0): #figlio per gestire operazioni menu
+            #operazione_utente = 1
+            #while(int(operazione_utente) != 0):
+                #operazione_utente = Client.Client.visualizza_menu_principale()
+                #print("Valore: " + operazione_utente)
             
                 #ricerca file
-                if(int(operazione_utente) == 1):            
-                    Client.Client.searchHandler()
+                #if(int(operazione_utente) == 1):            
+                #    Client.Client.searchHandler()
        
-            print("Fine operazioni utente")
-            #pulisco DB quando esco
-            os.kill(os.getppid(), signal.SIGKILL)
+            #print("Fine operazioni utente")            
+            
+            #os.kill(os.getppid(), signal.SIGKILL)
         
         
-        else: #gestisco funzionalita server 
-            s = Server.Server.initServerSocket()
-            while 1:
-                print("\t\t\t\t\t\t\t\t\tAttesa richiesta peer")
-                client, address = s.accept()
-                newpid = os.fork()
-                if(newpid == 0):
-                    try:
-                        s.close()
+        #else: #gestisco funzionalita server 
+        s = Server.Server.initServerSocket()
+        print("\nPronto a ricevere richieste...")
+        while 1:            
+            clientSocket, address = s.accept()
+            print("\nConnesso al peer con indirizzo: " + str(address))
+            newpid = os.fork()
+            if(newpid == 0):
+                try:
+                    s.close()
 
-                        #pulizia pkt vecchi da 300 s        
-                        Server.Server.expiredPacketHandler()
+                    #Server.Server.expiredPacketHandler()
 
-                        receivedString = Server.Server.readSocket(client)
-                        operazione = receivedString[0:4]
+                    receivedString = Server.Server.readSocket(clientSocket)
+                    operazione = receivedString[0:4]
 
-                        if operazione == "":
-                            break
-
-                        #operazione NEAR
-                        if operazione.upper() == "NEAR":
-                            Server.Server.nearHandler(receivedString)                    
-
+                    if operazione == "":
+                        break
+                    
+                    #login
+                    if operazione.upper() == "LOGI":
+                        Server.Server.loginHandler(receivedString, clientSocket)
                         
+                    #logout         
+                    if operazione.upper() == "LOGO":
+                        Server.Server.logoutHandler(receivedString, clientSocket)                   
+                        
+                    #aggiunta file
+                    if operazione.upper() == "ADFF":
+                        Server.Server.addFileHandler(receivedString)
+                    
+                    #rimozione file
+                    if operazione.upper() == "DEFF":
+                        Server.Server.deleteFileHandler(receivedString)  
+                        
+                    #ricerca file per conto di un altro supernodo
+                    if operazione.upper() == "QUER":
+                        Server.Server.fileSearchHandler(receivedString)
+                    
+                    #raccolta risultati della ricerca di un file
+                    if operazione.upper() == "AQUE":
+                        Server.Server.fileSearchResultHandler(receivedString)   
+                        
+                    #ricerca file per conto di un peer del mio cluster
+                    if operazione.upper() == "FIND":
+                        Server.Server.fileSearchRequestHandler(receivedString, clientSocket)          
 
-                    except Exception as e: 
-                        print e
-                        print("\t\t\t\t\t\t\t\t\tErrore ricezione lato server")
+                except Exception as e: 
+                    print e
+                    print("Errore ricezione lato server")
 
-                    finally:
-                        client.close() 
-                        stringa_ricevuta_server = ""
-                        os._exit(0) 
+                finally:
+                    clientSocket.close() 
+                    stringa_ricevuta_server = ""
+                    os._exit(0) 
 
-                else:
-                    client.close()
+            else:
+                clientSocket.close()
 
-            print("Terminato parte server del SuperPeer")
+        print("Terminato.")

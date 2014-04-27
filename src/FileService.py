@@ -5,10 +5,18 @@ import Peer
 class FileService:
         
     @staticmethod
-    def insertNewFile(database, sessionid, filemd5, filename):      
+    def insertNewFile(database, sessionid, filemd5, filename):
         try:
-            file = File.File(filemd5, filename)
+            file = FileService.getFile(database, filemd5)            
+            file.filename = filename            
+            file.update(database)
             
+            print("MD5 already registered. Filename changed: '" + file.filename + "'")
+        except:
+            pass
+              
+        try:
+            file = File.File(filemd5, filename)            
             file.insert(database, sessionid)
         except:
             pass

@@ -31,9 +31,13 @@ class File:
     
     def delete(self, database, sessionid):
         
-        database.execute("""DELETE FROM peer_has_file
-                            WHERE peer_sessionid = %s AND file_filemd5 = %s""",
-                            (sessionid, self.filemd5))
+        try:
+            database.execute("""DELETE FROM peer_has_file
+                                WHERE peer_sessionid = %s AND file_filemd5 = %s""",
+                                (sessionid, self.filemd5))
+        except:
+            print("File non condiviso da questo peer. Nessuna cancellazione effettuata.")
+            pass
         
         try:
             database.execute("""DELETE FROM file

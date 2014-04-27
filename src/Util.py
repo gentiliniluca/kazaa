@@ -3,9 +3,10 @@ import hashlib
 class Util:
     
     global HOST
-    HOST = "fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
+    #HOST = "fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
+    HOST = "::1"
     global PORT
-    PORT = 3332
+    PORT = 3334
     
     global IPSuperPeer
     IPSuperPeer="fd00:0000:0000:0000:c521:ae1e:ea72:8fc0"
@@ -14,15 +15,15 @@ class Util:
     PORTSuperPeer=8000
         
     global USERNAME
-    USERNAME = "root"
+    USERNAME = "p2pAdmin"
     global PASSWORD
-    PASSWORD = "lorenzo91"
+    PASSWORD = "p2pAdmin"
     
     global TTL
     TTL = 2
     
     global USEMODE
-    USEMODE=""
+    USEMODE = ""
         
     global MAX_NEARS
     MAX_NEARS = 2
