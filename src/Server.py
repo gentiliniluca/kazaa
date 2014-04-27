@@ -236,8 +236,6 @@ class Server:
         print("\t->Attesa dei risultati...")
         time.sleep(20)
         
-        Server.fileSearchResultHandler("AQUE"+pkt.idpacket+"fd00:0000:0000:0000:24f4:0969:d4f2:ad07033311234567890123456testaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")        
-        
         conn_db = Connessione.Connessione()
         searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore(), packetid, searchString)
         conn_db.esegui_commit()
