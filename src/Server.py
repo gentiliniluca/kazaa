@@ -206,9 +206,8 @@ class Server:
         
         print("\tRichiesta ricerca file dal peer SessionID: " + sessionID + ", Ricerca: " + searchString)         
         
-        conn_db = Connessione.Connessione()
-        packetid = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
-        pkt = PacketService.PacketService.insertNewPacket(conn_db.crea_cursore(), packetid)
+        conn_db = Connessione.Connessione()        
+        pkt = PacketService.PacketService.insertNewPacket(conn_db.crea_cursore(), None)
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
