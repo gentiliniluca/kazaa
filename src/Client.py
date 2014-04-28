@@ -149,6 +149,7 @@ class Client:
             
     @staticmethod 
     def searchHandler(SessionID):
+        
         try:
             conn_db=Connessione.Connessione()
             SearchResultService.SearchResultService.delete(conn_db.crea_cursore())
@@ -169,10 +170,26 @@ class Client:
             sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer)) )
             sock.send(stringa_da_trasmettere.encode())
             
-            #aspetto i 20 secondi per leggere il risultato
-            
-            
-            
+            #lettura e scrittura su db dei risultati della ricerca di un file 
+            stringa_ricevuta=sock.recv(4)
+            if(stringa_ricevuta!="AFIN"):
+                print "Errore non ricevuto AFIN"
+             else:
+	    	stringa_ricevuta=sock.recv(3)
+		occorenze_md5=int(stringa_ricevuta)
+		for i in range(0,occorenze_md5):
+			filemd5=sock.recv(16)
+			filename=sock.recv(100)
+			occorenze_peer=int(sock.recv(3))
+			for j in range(0,occorenze_peer):
+				ipp2p=sock.recv(39)
+				pp2p=sock.recv(5)
+				try:
+            				conn_db=Connessione.Connessione()
+            				SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, "0000000000000000")
+        			finally:
+            				conn_db.esegui_commit()
+            				conn_db.chiudi_connessione   
             sock.close()
             
         except Exception as e:
