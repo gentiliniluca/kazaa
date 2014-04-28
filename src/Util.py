@@ -3,10 +3,9 @@ import hashlib
 class Util:
     
     global HOST
-    #HOST = "fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
-    HOST = "::1"
+    HOST = "::1"#fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
     global PORT
-    PORT = 3334
+    PORT = 3331
     
     global IPSuperPeer
     IPSuperPeer="fd00:0000:0000:0000:c521:ae1e:ea72:8fc0"
@@ -15,9 +14,9 @@ class Util:
     PORTSuperPeer=8000
         
     global USERNAME
-    USERNAME = "p2pAdmin"
+    USERNAME = "root"
     global PASSWORD
-    PASSWORD = "p2pAdmin"
+    PASSWORD = "lucaluca"
     
     global TTL
     TTL = 2
@@ -29,7 +28,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/lorenzo/Desktop/kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/luca/Desktop/kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):

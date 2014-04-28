@@ -2,78 +2,54 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-CREATE SCHEMA IF NOT EXISTS `kazaa` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+CREATE SCHEMA IF NOT EXISTS `kazaa` DEFAULT CHARACTER SET utf8 ;
 USE `kazaa` ;
 
 -- -----------------------------------------------------
--- Table `kazaa`.`supernear`
+-- Table `kazaa`.`file`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `kazaa`.`supernear` (
-  `idsupernear` INT NOT NULL AUTO_INCREMENT ,
-  `ipp2p` CHAR(39) NOT NULL ,
-  `pp2p` CHAR(5) NOT NULL ,
-  PRIMARY KEY (`idsupernear`) )
+DROP TABLE IF EXISTS `kazaa`.`file` ;
+
+CREATE  TABLE IF NOT EXISTS `kazaa`.`file` (
+  `filemd5` CHAR(16) NOT NULL ,
+  `filename` CHAR(100) NOT NULL ,
+  PRIMARY KEY (`filemd5`) )
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = dec8;
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
 -- Table `kazaa`.`packet`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`packet` ;
+
 CREATE  TABLE IF NOT EXISTS `kazaa`.`packet` (
-  `idpacket` INT NOT NULL AUTO_INCREMENT ,
-  `created_at` VARCHAR(45) NOT NULL ,
+  `idpacket` CHAR(16) NOT NULL ,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`idpacket`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `kazaa`.`searchresult`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `kazaa`.`searchresult` (
-  `idsearchresult` INT NOT NULL AUTO_INCREMENT ,
-  `ipp2p` CHAR(39) NOT NULL ,
-  `pp2p` CHAR(5) NOT NULL ,
-  `filemd5` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`idsearchresult`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `kazaa`.`sharedfile`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `kazaa`.`sharedfile` (
-  `idsharedfile` INT NOT NULL AUTO_INCREMENT ,
-  `filename` CHAR(100) NOT NULL ,
-  `filemd5` CHAR(16) NOT NULL ,
-  PRIMARY KEY (`idsharedfile`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `kazaa`.`file`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `kazaa`.`file` (
-  `filemd5` CHAR(16) NOT NULL ,
-  `filename` CHAR(100) NOT NULL ,
-  PRIMARY KEY (`filemd5`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
 -- Table `kazaa`.`peer`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`peer` ;
+
 CREATE  TABLE IF NOT EXISTS `kazaa`.`peer` (
   `sessionid` CHAR(16) NOT NULL ,
   `ipp2p` CHAR(39) NOT NULL ,
   `pp2p` CHAR(5) NOT NULL ,
   PRIMARY KEY (`sessionid`) )
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
 -- Table `kazaa`.`peer_has_file`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`peer_has_file` ;
+
 CREATE  TABLE IF NOT EXISTS `kazaa`.`peer_has_file` (
   `file_filemd5` CHAR(16) NOT NULL ,
   `peer_sessionid` CHAR(16) NOT NULL ,
@@ -90,7 +66,53 @@ CREATE  TABLE IF NOT EXISTS `kazaa`.`peer_has_file` (
     REFERENCES `kazaa`.`peer` (`sessionid` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `kazaa`.`searchresult`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`searchresult` ;
+
+CREATE  TABLE IF NOT EXISTS `kazaa`.`searchresult` (
+  `idsearchresult` INT(11) NOT NULL AUTO_INCREMENT ,
+  `ipp2p` CHAR(39) NOT NULL ,
+  `pp2p` CHAR(5) NOT NULL ,
+  `filemd5` CHAR(16) NOT NULL ,
+  `filename` CHAR(100) NOT NULL ,
+  `packetid` CHAR(16) NOT NULL ,
+  PRIMARY KEY (`idsearchresult`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `kazaa`.`sharedfile`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`sharedfile` ;
+
+CREATE  TABLE IF NOT EXISTS `kazaa`.`sharedfile` (
+  `idsharedfile` INT(11) NOT NULL AUTO_INCREMENT ,
+  `filename` CHAR(100) NOT NULL ,
+  `filemd5` CHAR(16) NOT NULL ,
+  PRIMARY KEY (`idsharedfile`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `kazaa`.`supernear`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `kazaa`.`supernear` ;
+
+CREATE  TABLE IF NOT EXISTS `kazaa`.`supernear` (
+  `idsupernear` INT(11) NOT NULL AUTO_INCREMENT ,
+  `ipp2p` CHAR(39) NOT NULL ,
+  `pp2p` CHAR(5) NOT NULL ,
+  PRIMARY KEY (`idsupernear`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = dec8;
 
 USE `kazaa` ;
 
@@ -98,3 +120,4 @@ USE `kazaa` ;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

@@ -50,7 +50,6 @@ class Client:
             return nuovosessionid
             
     @staticmethod
-    #attenzione manca la stampa del numero di file rimossi nel supernodo all'operazione di logout
     def logout(SessionID):
         print(SessionID+"nel logout")
         if(SessionID != "" and SessionID != "0000000000000000"):
@@ -60,6 +59,9 @@ class Client:
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer) ))
                 sock.send(stringa_da_trasmettere.encode())
+                risposta=sock.recv(7)
+                print(risposta)
+                print "File eliminati dal supernpeer: "+str(risposta[4:7])
                 sock.close()
             except Exception as e:
                 print e
