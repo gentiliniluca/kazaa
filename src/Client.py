@@ -14,6 +14,9 @@ signal(SIGPIPE,SIG_DFL)
 
 class Client:
     
+    global SIZE
+    SIZE = 1024
+    
     @staticmethod
     def visualizza_menu_principale():
         
@@ -238,3 +241,77 @@ class Client:
                 print("Errore nel download del file, gli md5 sono diversi!")  
         else:
             print("Annullato")
+            
+            
+    #operazioni del peer che riguardano lato server
+    
+    @staticmethod
+    def initServerSocket():
+        
+        s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind((Util.HOST, Util.PORT))
+        s.listen(5)
+        return s
+    
+    @staticmethod
+    def readSocket(clientSocket):
+        
+        stringa_ricevuta_server = clientSocket.recv(SIZE)        
+        if stringa_ricevuta_server == "":
+            print("Socket vuota")
+        else:      
+            print("Pacchetto ricevuto: " + stringa_ricevuta_server)
+        return stringa_ricevuta_server
+    
+    #upload
+    @staticmethod
+    def uploadHandler(client, stringa_ricevuta_server):
+        
+        chunkLength = 1024
+        filemd5 = stringa_ricevuta_server[4:20]
+        
+        try:
+            conn_db = Connessione.Connessione()
+            
+            file = SharedFileService.SharedFileService.getSharedFileMD5(conn_db.crea_cursore(), filemd5)
+            
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()
+
+            if os.stat(Util.LOCAL_PATH + file.filename).st_size % chunkLength == 0:
+                nChunk = os.stat(Util.LOCAL_PATH + file.filename).st_size // chunkLength
+            else:
+                nChunk = (os.stat(Util.LOCAL_PATH + file.filename).st_size // chunkLength) + 1
+            
+            nChunk = str(nChunk).zfill(6)
+            sendingString = "ARET".encode()
+            sendingString = sendingString + nChunk.encode()
+            
+            openedFile = open(Util.LOCAL_PATH + file.filename, "rb")
+
+            while True:
+                chunk = openedFile.read(chunkLength)
+                if len(chunk) == chunkLength:
+                    sendingString = sendingString + str(chunkLength).zfill(5).encode()
+                    sendingString = sendingString + chunk
+                else:
+                    sendingString = sendingString + str(len(chunk)).zfill(5).encode()
+                    sendingString = sendingString + chunk
+                    break
+            
+#            while True:
+#                m = sendingString[:1024] 
+#                i = i+1               
+#                client.send(m)                    
+#                if len(m) < 1024:
+#                    break
+#                sendingString = sendingString[1024:]
+            client.sendall(sendingString)
+            
+            openedFile.close()
+            
+        except:
+            print sys.exc_info()
+            print("File not found!")
+    
