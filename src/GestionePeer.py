@@ -48,7 +48,7 @@ class GestionePeer:
         
         
         else: #gestisco funzionalita server 
-            s = Server.Server.initServerSocket()
+            s = Client.Client.initServerSocket()
             while 1:
                 print("\t\t\t\t\t\t\t\t\tAttesa richiesta peer")
                 client, address = s.accept()
@@ -57,18 +57,19 @@ class GestionePeer:
                     try:
                         s.close()
 
-                        #pulizia pkt vecchi da 300 s        
-                        Server.Server.expiredPacketHandler()
-
-                        receivedString = Server.Server.readSocket(client)
+                        receivedString = Client.Client.readSocket(client)
                         operazione = receivedString[0:4]
 
                         if operazione == "":
                             break
 
-                        #operazione NEAR
-                        if operazione.upper() == "NEAR":
-                            Server.Server.nearHandler(receivedString)                    
+                        #operazione RETR
+                        if operazione.upper() == "RETR":
+                            Client.Client.uploadHandler(client,receivedString) 
+                            
+                        #operazione SUPE  serve??
+                        if operazione.upper() == "SUPE":
+                            Client.Client.uploadHandler(client,receivedString)
 
                         
 

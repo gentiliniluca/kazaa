@@ -149,6 +149,12 @@ class Client:
             
     @staticmethod 
     def searchHandler(SessionID):
+        try:
+            conn_db=Connessione.Connessione()
+            SearchResultService.SearchResultService.delete(conn_db.crea_cursore())
+        finally:
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()
         while True:
             query_ricerca = raw_input("\n\tInserire la stringa di ricerca (massimo 20 caratteri): ")
             if(len(query_ricerca) <= 20):
@@ -162,6 +168,11 @@ class Client:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer)) )
             sock.send(stringa_da_trasmettere.encode())
+            
+            #aspetto i 20 secondi per leggere il risultato
+            
+            
+            
             sock.close()
             
         except Exception as e:
