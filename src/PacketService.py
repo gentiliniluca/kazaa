@@ -6,6 +6,17 @@ class PacketService:
     
     @staticmethod
     def insertNewPacket(database, idpacket):
+        if idpacket == None:
+            idpacket = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+            
+            packetidFound = True
+            while packetidFound:
+                try:
+                    PacketService.getPacket(database, idpacket)
+                    idpacket = "".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+                except:
+                    packetidFound = False
+                    
         packet = Packet.Packet(idpacket, None)
         packet.insert(database)
         return packet
