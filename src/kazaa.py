@@ -4,6 +4,8 @@ import Server
 import Util
 import os
 import signal
+import SearchResultService
+import Connessione
 
 class Kazaa:
     
@@ -20,6 +22,12 @@ class Kazaa:
     
     if(int(out)==1):
         Util.USEMODE="PEER"
+        try:
+            conn_db=Connessione.Connessione()
+            SearchResultService.SearchResultService.delete(conn_db.crea_cursore())
+        finally:
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()
         GestionePeer.GestionePeer.PeerManagement()
     else:
         Util.USEMODE="SUPERPEER"
