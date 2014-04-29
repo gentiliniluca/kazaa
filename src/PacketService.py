@@ -1,4 +1,6 @@
 import Packet
+import random
+import string
 
 class PacketService:
     global EXPIREDTIME 
