@@ -326,7 +326,7 @@ class Server:
         i = 0
         while i < len(searchResults):
             sendingString = sendingString + searchResults[i].filemd5
-            sendingString = sendingString + searchResults[i].filename
+            sendingString = sendingString + Util.Util.adattaStringa(100, searchResults[i].filename)
             sendingString = sendingString + Util.Util.adattaStringa(3, str(len(searchResults[i].peers)))
             
             j = 0

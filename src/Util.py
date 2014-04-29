@@ -5,7 +5,7 @@ import random
 class Util:
     
     global HOST
-    HOST = "fd00:0000:0000:0000:31d0:57cb:d54e:4fb0"
+    HOST = "::1"#"fd00:0000:0000:0000:31d0:57cb:d54e:4fb0"
     global PORT
     PORT = 8000#3331
     
@@ -15,8 +15,8 @@ class Util:
     global PORTSuperPeer
     PORTSuperPeer=8000
     
-    global SessionIDSuperPeer   #mi serve un sessionid se sono un superpeer per aggiunta file.... (MA senza fare login)
-    SessionIDSuperPeer="".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
+    #global SessionIDSuperPeer   #mi serve un sessionid se sono un superpeer per aggiunta file.... (MA senza fare login)
+    #SessionIDSuperPeer="".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
         
     global USERNAME
     USERNAME = "root"

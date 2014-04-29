@@ -6,28 +6,28 @@ import sys
 class SearchResultService:
     
     @staticmethod
-    def insertNewSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid):
+    def insertNewSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid, myResult):
         
         try:
-            sr = SearchResultService.getSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid)
+            sr = SearchResultService.getSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid, myResult)
         
         except:
-            sr = SearchResult.SearchResult(None, ipp2p, pp2p, filemd5, filename, packetid)
+            sr = SearchResult.SearchResult(None, ipp2p, pp2p, filemd5, filename, packetid, myResult)
             sr.insert(database)
         
         return sr
     
     @staticmethod
-    def getSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid):
+    def getSearchResult(database, ipp2p, pp2p, filemd5, filename, packetid, myResult):
         
-        database.execute("""SELECT ipp2p, pp2p, filemd5, filename
+        database.execute("""SELECT ipp2p, pp2p, filemd5, filename, myResult
                             FROM searchresult
-                            WHERE ipp2p = %s AND pp2p = %s AND filemd5 = %s AND filename = %s AND packetid = %s""",
-                            (ipp2p, pp2p, filemd5, filename, packetid))
+                            WHERE ipp2p = %s AND pp2p = %s AND filemd5 = %s AND filename = %s AND packetid = %s AND myResult = %s""",
+                            (ipp2p, pp2p, filemd5, filename, packetid, myResult))
         
-        ipp2p, pp2p, filemd5, filename, packetid = database.fetchone()
+        ipp2p, pp2p, filemd5, filename, packetid, myResult = database.fetchone()
         
-        searchResult = SearchResult.SearchResult(None, ipp2p, pp2p, filemd5, filename, packetid)
+        searchResult = SearchResult.SearchResult(None, ipp2p, pp2p, filemd5, filename, packetid, myResult)
         
         return searchResult
     
@@ -38,10 +38,10 @@ class SearchResultService:
         #costruzione della lista di risultati della ricerca
         
         #file con md5 non presente nel mio cluster
-        database.execute("""SELECT ipp2p, pp2p, filemd5, filename
+        database.execute("""SELECT ipp2p, pp2p, filemd5, filename, myResult
                             FROM searchresult
-                            WHERE packetid = %s AND filemd5 NOT IN (SELECT filemd5
-                                                                    FROM file)
+                            WHERE packetid = %s AND myResult = 'False' AND filemd5 NOT IN (SELECT filemd5
+                                                                                           FROM file)
                             ORDER BY filemd5""",
                             (packetid))
         
@@ -50,7 +50,7 @@ class SearchResultService:
             previous_fileMD5 = ""
             
             while True:
-                ipp2p, pp2p, filemd5, filename = database.fetchone()
+                ipp2p, pp2p, filemd5, filename, myResult = database.fetchone()
                 
                 if filemd5 != previous_fileMD5:
                     searchResults.append(File.File(filemd5, filename))
@@ -92,7 +92,7 @@ class SearchResultService:
         while j < len(searchResults):             
             database.execute("""SELECT ipp2p, pp2p
                                 FROM searchresult
-                                WHERE packetid = %s AND filemd5 = %s""", (packetid, searchResults[j].filemd5))
+                                WHERE packetid = %s AND myResult = 'False' AND filemd5 = %s""", (packetid, searchResults[j].filemd5))
             
             try:                       
                 while True:
@@ -107,4 +107,5 @@ class SearchResultService:
     
     @staticmethod
     def delete(database):
-        database.execute("""DELETE FROM searchresult""")
+        database.execute("""DELETE FROM searchresult
+                            WHERE myResult = 'T'""")

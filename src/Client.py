@@ -3,6 +3,7 @@ import random
 import socket
 import string
 import Util
+import PeerService
 import SharedFile
 import SharedFileService
 import SearchResult
@@ -24,7 +25,7 @@ class Client:
             if(Util.USEMODE=="PEER"):
                 print("\n************************\n*  1 - Ricerca File    *\n*  2 - Login           *\n*  3 - Carica File     *\n*  4 - Download File   *\n*  5 - Rimuovi File    *\n*  6 - Logout          *\n*  0 - Fine            *\n************************")
             else:
-                print("\n************************\n*  1 - Ricerca File    *\n*  2 - Carica File     *\n*  3 - Download File   *\n*  4 - Rimuovi File    *\n*  0 - Fine            *\n************************")
+                print("\n************************\n*  1 - Ricerca File    *\n*  2 - Carica File     *\n*  3 - Rimuovi File    *\n*  4 - Download File   *\n*  5 - Ricerca Vicini  *\n*  0 - Fine            *\n************************")
             out=raw_input("\n\tOperazione scelta: ")
             if(Util.USEMODE=="PEER" and (int(out) >= 0 and int(out) <= 6 ) or Util.USEMODE=="SUPERPEER" and(int(out) >= 0 and int(out) <= 4) ):
                 break
@@ -80,7 +81,7 @@ class Client:
     @staticmethod
     def addFile(SessionID):
         nomefile=""
-        filemad5=""
+        filemd5=""
         
         #aggiungo file nella tabella del peer SharedFile
         try:
@@ -191,7 +192,7 @@ class Client:
 				pp2p=sock.recv(5)
 				try:
             				conn_db=Connessione.Connessione()
-            				SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, "0000000000000000")
+            				SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, "0000000000000000", 'T')
         			finally:
             				conn_db.esegui_commit()
             				conn_db.chiudi_connessione   
@@ -348,3 +349,38 @@ class Client:
             print sys.exc_info()
             print("File not found!")
     
+    @staticmethod
+    def loginSuperpeer():
+        conn_db = Connessione.Connessione()
+        peer = PeerService.PeerService.insertNewPeer(conn_db.crea_cursore(), Util.HOST, Util.PORT)
+        conn_db.esegui_commit()
+        conn_db.chiudi_connessione()
+        
+        return peer.sessionid
+    
+    @staticmethod
+    def superNearSearchHandler():
+        conn_db = Connessione.Connessione()
+        pkt = PacketService.PacketService.insertNewPacket(conn_db.crea_cursore(), None)
+        conn_db.esegui_commit()
+        conn_db.chiudi_connessione()
+        
+        sendingString = "SUPE" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5, str(Util.PORT)) + Util.Util.adattaStringa(2, str(Util.TTL))
+        
+        conn_db = Connessione.Connessione()
+        vicini = []
+        vicini = SuperNearService.SuperNearService.getSuperNears(conn_db.crea_cursore())
+        conn_db.esegui_commit()
+        conn_db.chiudi_connessione()
+        
+        print("Avvio ricerca di supernodi vicini")
+        i = 0
+        while i < len(vicini):           
+            try:
+                print("Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                sock.connect((vicini[i].ipp2p, int(vicini[i].pp2p)))
+                sock.send(sendingString.encode())
+            except:
+                print("Il vicino " + vicini[i].ipp2p + " " + vicini[i].pp2p + " non e' online")
+            i = i + 1        

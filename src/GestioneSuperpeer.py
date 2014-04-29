@@ -1,6 +1,7 @@
 import Client 
 import Connessione
-import Server 
+import Server
+import PeerService 
 import Util
 import os
 import signal
@@ -14,25 +15,38 @@ class GestioneSuperpeer:
         pid = os.fork()
         if(pid == 0): #figlio per gestire operazioni menu
             operazione_utente = 1
-            SessionID=Util.SessionIDSuperPeer
-            while(int(operazione_utente) != 0):
-                operazione_utente = Client.Client.visualizza_menu_principale()
-                print("Valore: " + operazione_utente)
+            #SessionID = Util.SessionIDSuperPeer
             
+            SessionID = Client.Client.loginSuperpeer()
+            
+            while(int(operazione_utente) != 0):
+                operazione_utente = Client.Client.visualizza_menu_principale()           
+                           
                 #ricerca file
                 if(int(operazione_utente) == 1):            
-                    Client.Client.searchHandler()
-                    
-                #aggiunta file
+                    Client.Client.searchHandler(SessionID)
+                
+                #carica file
                 if(int(operazione_utente) == 2):            
                     Client.Client.addFile(SessionID)
+                
+                #rimuovi file
+                if(int(operazione_utente) == 3):            
+                    Client.Client.deleteFile(SessionID)
+                    
+                #download file
+                if(int(operazione_utente) == 4):            
+                    Client.Client.downloadFile()        
+                    
+                #ricerca vicini
+                if(int(operazione_utente) == 5):            
+                    Client.Client.superNearSearchHandler()
        
             print("Fine operazioni utente")
-            #logout nascosto
-            
+            #logout all'uscita
+            Client.Client.logout(SessionID)
             os.kill(os.getppid(), signal.SIGKILL)
-        
-        
+                
         else: #gestisco funzionalita server 
             s = Server.Server.initServerSocket()
             print("\n\t\t\t\t\t\tPronto a ricevere richieste...")
