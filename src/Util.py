@@ -26,13 +26,13 @@ class Util:
     global TTL
     TTL = 2
     
-<<<<<<< HEAD
+
     global SUPERNEARTTL
     SUPERNEARTTL = 4
-=======
+
     global SLEEPTIME
     SLEEPTIME = 2
->>>>>>> ebcf198f61a97d8d121fb6a87890e8d5c87c8e1c
+
     
     global USEMODE
     USEMODE = ""
