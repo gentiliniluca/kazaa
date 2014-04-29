@@ -2,6 +2,7 @@ import SearchResult
 import File
 import Peer
 import sys
+import os
 
 class SearchResultService:
     
@@ -104,6 +105,35 @@ class SearchResultService:
             j = j + 1
         
         return searchResults
+    
+    @staticmethod
+    def getSearchResultsDownload(database):
+        #print("eseguo query")
+        
+        database.execute("""SELECT ipp2p, pp2p, filemd5, filename
+                            FROM searchresult""")
+       
+        searchResults = []
+        try:
+            #print("Entro try")
+            
+            while True:
+                #print("entro cilco")
+                ipp2p, pp2p, filemd5, filename = database.fetchone()
+                #print("ipp2p: "+ipp2p+" pp2p: "+pp2p+" filemd5: "+filemd5+" filename: "+filename)
+                searchResult = SearchResult.SearchResult(None,ipp2p, pp2p, filemd5, filename,None)
+                searchResults.append(searchResult)
+               
+        except:
+            #print (sys.exc_info())
+            pass
+        
+        #print("dentro la funzione "+str(len(searchResults)))
+        
+        return searchResults
+    
+    
+    
     
     @staticmethod
     def delete(database):

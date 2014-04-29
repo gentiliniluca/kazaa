@@ -182,14 +182,27 @@ class Client:
                 print "Errore non ricevuto AFIN"
             else:
 	    	stringa_ricevuta=sock.recv(3)
+                print(stringa_ricevuta)
 		occorenze_md5=int(stringa_ricevuta)
-		for i in range(0,occorenze_md5):
-			filemd5=sock.recv(16)
+                print("occorenze md5: "+str(occorenze_md5))
+		
+                for i in range(0,occorenze_md5):
+                        print("ciao contatore: "+str(i))
+                        filemd5=sock.recv(16)
+                        print("md5: "+filemd5)
 			filename=sock.recv(100)
+                        #elimino eventuali asterischi e spazi finali
+                        filename=Util.Util.elimina_spazi_iniziali_finali(filename)
+                        filename=Util.Util.elimina_asterischi_iniziali_finali(filename)
+                        
+                        print("file name: "+filename)
 			occorenze_peer=int(sock.recv(3))
+                        print("occorenze peer: "+str(occorenze_peer))
+                        #print("Contatore: "+str(i)+"filemd5: "+filemd5+"filename: "+filename+" Occorenze Perr: "+str(occorenze_peer))
 			for j in range(0,occorenze_peer):
 				ipp2p=sock.recv(39)
 				pp2p=sock.recv(5)
+                                print("IPP2P"+ipp2p+"PP2P: "+pp2p )
 				try:
             				conn_db=Connessione.Connessione()
             				SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, "0000000000000000", 'T')
@@ -207,9 +220,11 @@ class Client:
     def downloadFile():
         
         conn_db = Connessione.Connessione()
-        searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore())
+        searchResults = SearchResultService.SearchResultService.getSearchResultsDownload(conn_db.crea_cursore())
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
+        
+        
         
         i = 0
         while i < len(searchResults):
@@ -383,4 +398,4 @@ class Client:
                 sock.send(sendingString.encode())
             except:
                 print("Il vicino " + vicini[i].ipp2p + " " + vicini[i].pp2p + " non e' online")
-            i = i + 1        
+            i = i + 1
