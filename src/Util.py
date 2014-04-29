@@ -15,24 +15,19 @@ class Util:
     global PORTSuperPeer
     PORTSuperPeer=8000
     
-    #global SessionIDSuperPeer   #mi serve un sessionid se sono un superpeer per aggiunta file.... (MA senza fare login)
-    #SessionIDSuperPeer="".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
-        
     global USERNAME
     USERNAME = "root"
     global PASSWORD
     PASSWORD = "lucaluca"
     
     global TTL
-    TTL = 2
-    
-<<<<<<< HEAD
+    TTL = 2   
+
     global SUPERNEARTTL
     SUPERNEARTTL = 4
-=======
+
     global SLEEPTIME
     SLEEPTIME = 2
->>>>>>> ebcf198f61a97d8d121fb6a87890e8d5c87c8e1c
     
     global USEMODE
     USEMODE = ""

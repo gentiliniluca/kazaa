@@ -15,7 +15,6 @@ class GestioneSuperpeer:
         pid = os.fork()
         if(pid == 0): #figlio per gestire operazioni menu
             operazione_utente = 1
-            #SessionID = Util.SessionIDSuperPeer
             
             SessionID = Client.Client.loginSuperpeer()
             
