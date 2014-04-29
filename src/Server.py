@@ -312,7 +312,7 @@ class Server:
             i = i + 1  
         
         print("\t->Attesa dei risultati...")
-        time.sleep(2)
+        time.sleep(Util.Util.SLEEPTIME)
         
         conn_db = Connessione.Connessione()
         searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore(), pkt.idpacket, searchString)
@@ -326,7 +326,7 @@ class Server:
         i = 0
         while i < len(searchResults):
             sendingString = sendingString + searchResults[i].filemd5
-            sendingString = sendingString + searchResults[i].filename
+            sendingString = sendingString + Util.Util.aggiungi_spazi_finali(searchResults[i].filename, 100)
             sendingString = sendingString + Util.Util.adattaStringa(3, str(len(searchResults[i].peers)))
             
             j = 0
