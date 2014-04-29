@@ -312,7 +312,7 @@ class Server:
             i = i + 1  
         
         print("\t->Attesa dei risultati...")
-        time.sleep(Util.Util.SLEEPTIME)
+        time.sleep(Util.SLEEPTIME)
         
         conn_db = Connessione.Connessione()
         searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore(), pkt.idpacket, searchString)
