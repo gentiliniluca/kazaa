@@ -10,6 +10,8 @@ import SearchResult
 import SearchResultService
 import sys
 import os
+import PacketService
+import SuperNearService
 
 
 from signal import signal, SIGPIPE, SIG_DFL
@@ -29,7 +31,7 @@ class Client:
             else:
                 print("\n************************\n*  1 - Ricerca File    *\n*  2 - Carica File     *\n*  3 - Rimuovi File    *\n*  4 - Download File   *\n*  5 - Ricerca Vicini  *\n*  0 - Fine            *\n************************")
             out=raw_input("\n\tOperazione scelta: ")
-            if(Util.USEMODE=="PEER" and (int(out) >= 0 and int(out) <= 6 ) or Util.USEMODE=="SUPERPEER" and(int(out) >= 0 and int(out) <= 4) ):
+            if(Util.USEMODE=="PEER" and (int(out) >= 0 and int(out) <= 6 ) or Util.USEMODE=="SUPERPEER" and(int(out) >= 0 and int(out) <= 5) ):
                 break
             print("Valore inserito errato!")
         
