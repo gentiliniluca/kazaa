@@ -110,7 +110,7 @@ class SearchResultService:
     def getSearchResultsDownload(database):
         #print("eseguo query")
         
-        database.execute("""SELECT ipp2p, pp2p, filemd5, filename
+        database.execute("""SELECT ipp2p, pp2p, filemd5, filename, myResult
                             FROM searchresult""")
        
         searchResults = []
@@ -119,9 +119,9 @@ class SearchResultService:
             
             while True:
                 #print("entro cilco")
-                ipp2p, pp2p, filemd5, filename = database.fetchone()
+                ipp2p, pp2p, filemd5, filename, myResult = database.fetchone()
                 #print("ipp2p: "+ipp2p+" pp2p: "+pp2p+" filemd5: "+filemd5+" filename: "+filename)
-                searchResult = SearchResult.SearchResult(None,ipp2p, pp2p, filemd5, filename,None)
+                searchResult = SearchResult.SearchResult(None,ipp2p, pp2p, filemd5, filename,None,myResult)
                 searchResults.append(searchResult)
                
         except:
