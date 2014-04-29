@@ -40,8 +40,8 @@ class Client:
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer) ))
             sock.send(stringa_da_trasmettere.encode())
-            risposta=sock.recv(21)
-            print(risposta)
+            risposta=sock.recv(20)
+            print("Session id:"+risposta[4:20])
             nuovosessionid=risposta[4:20]
             sock.close()
         except Exception as e:
@@ -54,18 +54,23 @@ class Client:
             
     @staticmethod
     def logout(SessionID):
-        print(SessionID+"nel logout")
+       
         if(SessionID != "" and SessionID != "0000000000000000"):
             stringa_da_trasmettere="LOGO"+SessionID
-            print("str da trasmeteer"+stringa_da_trasmettere)
+            
             try:
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer) ))
                 sock.send(stringa_da_trasmettere.encode())
                 risposta=sock.recv(7)
-                print(risposta)
+                print("Session id:"+SessionID)
                 print "File eliminati dal supernpeer: "+str(risposta[4:7])
                 sock.close()
+                #quando faccio il logout elimino tutti i record dalla tabella sharedfile
+                conn_db=Connessione.Connessione()
+                SharedFileService.SharedFileService.delete(conn_db.crea_cursore())
+                conn_db.esegui_commit()
+                conn_db.chiudi_connessione()
             except Exception as e:
                 print e
                 print "Errore logout"
@@ -82,7 +87,7 @@ class Client:
             conn_db = Connessione.Connessione()
             nomefile = raw_input("Inserire il nome del file: " + Util.LOCAL_PATH)
             filemd5 = Util.Util.get_md5(Util.LOCAL_PATH + nomefile)
-            print("md5: " + filemd5+"lunghezza: "+str(len(filemd5))+ "nome: " + nomefile)
+            #print("md5: " + filemd5+"lunghezza: "+str(len(filemd5))+ "nome: " + nomefile)
             file = SharedFileService.SharedFileService.insertNewSharedFile(conn_db.crea_cursore(), filemd5, nomefile)
             
         except Exception as e:
@@ -97,7 +102,7 @@ class Client:
         try:
             #nomefile = Util.Util.aggiungi_spazi_finali(nomefile,100)
             stringa_da_inviare="ADFF"+SessionID+filemd5+nomefile
-            print(stringa_da_inviare)
+            #print(stringa_da_inviare)
             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
             sock.connect((Util.IPSuperPeer, int(Util.PORTSuperPeer) ))
             sock.send(stringa_da_inviare)
@@ -174,7 +179,7 @@ class Client:
             stringa_ricevuta=sock.recv(4)
             if(stringa_ricevuta!="AFIN"):
                 print "Errore non ricevuto AFIN"
-             else:
+            else:
 	    	stringa_ricevuta=sock.recv(3)
 		occorenze_md5=int(stringa_ricevuta)
 		for i in range(0,occorenze_md5):
