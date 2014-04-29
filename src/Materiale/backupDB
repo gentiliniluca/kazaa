@@ -82,6 +82,7 @@ CREATE  TABLE IF NOT EXISTS `kazaa`.`searchresult` (
   `filemd5` CHAR(16) NOT NULL ,
   `filename` CHAR(100) NOT NULL ,
   `packetid` CHAR(16) NOT NULL ,
+  `myResult` CHAR(1) NOT NULL ,
   PRIMARY KEY (`idsearchresult`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
