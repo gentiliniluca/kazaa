@@ -25,8 +25,8 @@ class GestioneSuperpeer:
                 #ricerca file
                 if(int(operazione_utente) == 1):            
                     Client.Client.searchHandler(SessionID)
-                
-                #carica file
+                                        
+                #aggiunta file
                 if(int(operazione_utente) == 2):            
                     Client.Client.addFile(SessionID)
                 

@@ -5,13 +5,12 @@ import random
 class Util:
     
     global HOST
-
-    HOST = "fd00:0000:0000:0000:e147:010d:9793:b24e"
+    HOST = "fd00:0000:0000:0000:4444:7844:37e8:9eac"
     global PORT
-    PORT = 3332
+    PORT = 8000#3331
     
     global IPSuperPeer
-    IPSuperPeer="fd00:0000:0000:0000:31d0:57cb:d54e:4fb0"
+    IPSuperPeer="fd00:0000:0000:0000:4444:7844:37e8:9eac"
     
     global PORTSuperPeer
     PORTSuperPeer=8000
@@ -22,13 +21,18 @@ class Util:
     global USERNAME
     USERNAME = "root"
     global PASSWORD
-    PASSWORD = "lorenzo91"
+    PASSWORD = "lucaluca"
     
     global TTL
     TTL = 2
     
+<<<<<<< HEAD
     global SUPERNEARTTL
     SUPERNEARTTL = 4
+=======
+    global SLEEPTIME
+    SLEEPTIME = 2
+>>>>>>> ebcf198f61a97d8d121fb6a87890e8d5c87c8e1c
     
     global USEMODE
     USEMODE = ""
@@ -37,7 +41,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/lorenzo/Desktop/kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/luca/Desktop/Kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):

@@ -8,6 +8,8 @@ import SharedFile
 import SharedFileService
 import SearchResult
 import SearchResultService
+import sys
+import os
 
 
 from signal import signal, SIGPIPE, SIG_DFL
