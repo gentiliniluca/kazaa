@@ -21,14 +21,14 @@ class Util:
     PASSWORD = "lucaluca"
     
     global TTL
-    TTL = 2   
-
+    TTL = 2
+    
     global SUPERNEARTTL
     SUPERNEARTTL = 4
 
     global SLEEPTIME
     SLEEPTIME = 2
-    
+
     global USEMODE
     USEMODE = ""
         
