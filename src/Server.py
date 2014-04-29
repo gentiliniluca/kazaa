@@ -117,7 +117,10 @@ class Server:
         conn_db = Connessione.Connessione()
         
         try:
-            superNear = SuperNearService.SuperNearService.insertNewSuperNear(conn_db.crea_cursore(), ipp2p, pp2p)
+            c = conn_db.crea_cursore()
+            PacketService.PacketService.deleteExpiredPacket(c)
+            packet = PacketService.PacketService.getPacket(c, pktid)            
+            superNear = SuperNearService.SuperNearService.insertNewSuperNear(c, ipp2p, pp2p)
             print("\t->OK")
         except:
             print("\t->Inserimento di vicino non effettuato")
