@@ -174,7 +174,7 @@ class Client:
             stringa_ricevuta=sock.recv(4)
             if(stringa_ricevuta!="AFIN"):
                 print "Errore non ricevuto AFIN"
-             else:
+            else:
 	    	stringa_ricevuta=sock.recv(3)
 		occorenze_md5=int(stringa_ricevuta)
 		for i in range(0,occorenze_md5):
