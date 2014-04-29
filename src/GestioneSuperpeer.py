@@ -21,7 +21,7 @@ class GestioneSuperpeer:
             
                 #ricerca file
                 if(int(operazione_utente) == 1):            
-                    Client.Client.searchHandler()
+                    Client.Client.searchHandler(SessionID)
                     
                 #aggiunta file
                 if(int(operazione_utente) == 2):            
