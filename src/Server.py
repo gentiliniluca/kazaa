@@ -204,6 +204,9 @@ class Server:
         sessionID = receivedString[4:20]
         searchString = receivedString[20:40] 
         
+        searchString=Util.Util.elimina_spazi_iniziali_finali(searchString)
+        searchString=Util.Util.elimina_asterischi_iniziali_finali(searchString)
+        
         print("\tRichiesta ricerca file dal peer SessionID: " + sessionID + ", Ricerca: " + searchString)         
         
         conn_db = Connessione.Connessione()        
@@ -213,7 +216,6 @@ class Server:
         
         ttl = Util.TTL 
         sendingString = "QUER" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5,str(Util.PORT)) + Util.Util.adattaStringa(2,str(Util.TTL)) + searchString
-        
         conn_db = Connessione.Connessione()
         vicini = []
         vicini = SuperNearService.SuperNearService.getSuperNears(conn_db.crea_cursore())
@@ -233,10 +235,10 @@ class Server:
             i = i + 1  
         
         print("\t->Attesa dei risultati...")
-        time.sleep(20)
+        time.sleep(2)
         
         conn_db = Connessione.Connessione()
-        searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore(), packetid, searchString)
+        searchResults = SearchResultService.SearchResultService.getSearchResults(conn_db.crea_cursore(), pkt.idpacket, searchString)
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
@@ -257,7 +259,7 @@ class Server:
                 
                 j = j + 1
             i = i + 1
-        
+            
         clientSocket.send(sendingString)
         
         print("\t->OK")
