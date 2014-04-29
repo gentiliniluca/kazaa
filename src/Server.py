@@ -51,6 +51,81 @@ class Server:
         return stringa_ricevuta_server
     
     @staticmethod
+    def superNearSearchHandler(receivedString, clientSocket):
+        pktid = receivedString[4:20]
+        ipp2p = receivedString[20:59]
+        pp2p = receivedString[59:64]
+        ttl = receivedString[64:66]
+        
+        print("\t->Operazione ricerca vicini da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
+        
+        conn_db = Connessione.Connessione()
+        try:
+            pkt = PacketService.PacketService.getPacket(conn_db.crea_cursore(), pktid)
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()   
+            
+        except:
+            pkt = PacketService.PacketService.insertNewPacket(conn_db.crea_cursore(), pktid)
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()                      
+            
+            #se TTL > 1 inoltro il pacchetto ricevuto anche ai vicini
+            if(int(ttl) > 1):                
+                print("\t->Inoltro messaggio ai vicini")                
+                newTTL = int(ttl) - 1 
+                
+                conn_db = Connessione.Connessione()
+                vicini = []
+                vicini = SuperNearService.SuperNearService.getSuperNears(conn_db.crea_cursore())
+                conn_db.esegui_commit()
+                conn_db.chiudi_connessione()    
+                  
+                i = 0
+                while i < len(vicini):
+                    if(vicini[i].ipp2p != ipp2p and vicini[i].pp2p != pp2p):
+                        print("\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                        
+                        try:
+                            sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                            sock.connect((vicini[i].ipp2p, int(vicini[i].pp2p)))
+                            sendingString = "SUPE" + pktid + ipp2p + Util.Util.adattaStringa(5, str(pp2p)) + Util.Util.adattaStringa(2,str(newTTL))
+                            sock.send(sendingString.encode())                           
+                        
+                        except:
+                            print("\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
+                    
+                    i = i + 1
+                    
+            #in ogni caso rispondo alla richiesta
+            sendingString = "ASUP" + pktid + Util.HOST + Util.Util.adattaStringa(5, str(Util.PORT))
+            sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+            sock.connect((ipp2p, int(pp2p)))
+            sock.send(sendingString)
+            sock.close()
+            
+        print("\t->OK")
+
+    @staticmethod
+    def superNearSearchResultHandler(receivedString):
+        pktid = receivedString[4:20]
+        ipp2p = receivedString[20:59]
+        pp2p = receivedString[59:64]
+        
+        print("\tOperazione inserimento nuovo supernodo vicino. Ip: " + ipp2p + ", Porta: " + pp2p)
+        
+        conn_db = Connessione.Connessione()
+        
+        try:
+            superNear = SuperNearService.SuperNearService.insertNewSuperNear(conn_db.crea_cursore(), ipp2p, pp2p)
+            print("\t->OK")
+        except:
+            print("\t->Inserimento di vicino non effettuato")
+        finally:
+            conn_db.esegui_commit()
+            conn_db.chiudi_connessione()       
+    
+    @staticmethod
     def loginHandler(receivedString, clientSocket):
         ipp2p = receivedString[4:43]
         pp2p = receivedString[43:48]
@@ -170,7 +245,7 @@ class Server:
             while i < len(files):
                 j = 0
                 while j < len(files[i].peers):                 
-                    sendingString = "AQUE" + pktid + files[i].peers[j].ipp2 + Util.Util.adattaStringa(5, files[i].peers[j].pp2p) + files[i].filemd5 + files[i].filename
+                    sendingString = "AQUE" + pktid + files[i].peers[j].ipp2 + Util.Util.adattaStringa(5, files[i].peers[j].pp2p) + files[i].filemd5 + Util.Util.adattaStringa(100, files[i].filename)
                     sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                     sock.connect((ipp2p, int(pp2p)))
                     sock.send(sendingString)
@@ -212,7 +287,7 @@ class Server:
         conn_db.chiudi_connessione()
         
         ttl = Util.TTL 
-        sendingString = "QUER" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5,str(Util.PORT)) + Util.Util.adattaStringa(2,str(Util.TTL)) + searchString
+        sendingString = "QUER" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5,str(Util.PORT)) + Util.Util.adattaStringa(2,str(ttl)) + searchString
         
         conn_db = Connessione.Connessione()
         vicini = []

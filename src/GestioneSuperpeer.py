@@ -51,6 +51,14 @@ class GestioneSuperpeer:
 
                         if operazione == "":
                             break
+                        
+                        #ricerca supernodi vicini
+                        if operazione.upper() == "SUPE":
+                            Server.Server.superNearSearchHandler(receivedString, clientSocket)
+                            
+                        #raccolta risultati ricerca supernodi vicini
+                        if operazione.upper() == "ASUP":
+                            Server.Server.superNearSearchResultHandler(receivedString)
 
                         #login
                         if operazione.upper() == "LOGI":
