@@ -99,7 +99,11 @@ class GestioneSuperpeer:
 
                         #ricerca file per conto di un peer del mio cluster
                         if operazione.upper() == "FIND":
-                            Server.Server.fileSearchRequestHandler(receivedString, clientSocket)          
+                            Server.Server.fileSearchRequestHandler(receivedString, clientSocket) 
+                            
+                        #operazione RETR
+                        if operazione.upper() == "RETR":
+                            Client.Client.uploadHandler(clientSocket,receivedString)
 
                     except Exception as e: 
                         print e
