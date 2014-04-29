@@ -63,3 +63,6 @@ class SharedFileService:
         
         return sharedFiles
     
+    @staticmethod
+    def delete(database):
+        database.execute("""DELETE FROM sharedfile""")
