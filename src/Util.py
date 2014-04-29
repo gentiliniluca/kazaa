@@ -1,17 +1,22 @@
 import hashlib
+import string
+import random
 
 class Util:
     
     global HOST
-    HOST = "::1"#fd00:0000:0000:0000:482b:92b3:8aec:1694"#1dd3:234b:b49a:d734"
+    HOST = "fd00:0000:0000:0000:31d0:57cb:d54e:4fb0"
     global PORT
-    PORT = 3331
+    PORT = 8000#3331
     
     global IPSuperPeer
-    IPSuperPeer="fd00:0000:0000:0000:c521:ae1e:ea72:8fc0"
+    IPSuperPeer="fd00:0000:0000:0000:31d0:57cb:d54e:4fb0"
     
     global PORTSuperPeer
     PORTSuperPeer=8000
+    
+    global SessionIDSuperPeer   #mi serve un sessionid se sono un superpeer per aggiunta file.... (MA senza fare login)
+    SessionIDSuperPeer="".join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
         
     global USERNAME
     USERNAME = "root"
@@ -28,7 +33,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/luca/Desktop/kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/luca/Desktop/Kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):
