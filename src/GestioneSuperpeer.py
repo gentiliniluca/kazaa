@@ -14,6 +14,7 @@ class GestioneSuperpeer:
         pid = os.fork()
         if(pid == 0): #figlio per gestire operazioni menu
             operazione_utente = 1
+            SessionID=Util.SessionIDSuperPeer
             while(int(operazione_utente) != 0):
                 operazione_utente = Client.Client.visualizza_menu_principale()
                 print("Valore: " + operazione_utente)
@@ -21,8 +22,13 @@ class GestioneSuperpeer:
                 #ricerca file
                 if(int(operazione_utente) == 1):            
                     Client.Client.searchHandler()
+                    
+                #aggiunta file
+                if(int(operazione_utente) == 2):            
+                    Client.Client.addFile(SessionID)
        
-            print("Fine operazioni utente")            
+            print("Fine operazioni utente")
+            #logout nascosto
             
             os.kill(os.getppid(), signal.SIGKILL)
         
