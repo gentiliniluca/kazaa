@@ -267,7 +267,7 @@ class Server:
         filename = Util.Util.elimina_spazi_iniziali_finali(filename)
         
         conn_db = Connessione.Connessione()
-        sr = SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, pktid)
+        sr = SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, pktid, 'F')
         
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()

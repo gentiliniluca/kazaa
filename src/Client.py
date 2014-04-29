@@ -380,7 +380,7 @@ class Client:
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
-        sendingString = "SUPE" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5, str(Util.PORT)) + Util.Util.adattaStringa(2, str(Util.TTL))
+        sendingString = "SUPE" + pkt.idpacket + Util.HOST + Util.Util.adattaStringa(5, str(Util.PORT)) + Util.Util.adattaStringa(2, str(Util.SUPERNEARTTL))
         
         conn_db = Connessione.Connessione()
         vicini = []

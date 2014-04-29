@@ -27,6 +27,9 @@ class Util:
     global TTL
     TTL = 2
     
+    global SUPERNEARTTL
+    SUPERNEARTTL = 4
+    
     global USEMODE
     USEMODE = ""
         

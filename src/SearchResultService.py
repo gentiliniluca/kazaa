@@ -41,7 +41,7 @@ class SearchResultService:
         #file con md5 non presente nel mio cluster
         database.execute("""SELECT ipp2p, pp2p, filemd5, filename, myResult
                             FROM searchresult
-                            WHERE packetid = %s AND myResult = 'False' AND filemd5 NOT IN (SELECT filemd5
+                            WHERE packetid = %s AND myResult = 'F' AND filemd5 NOT IN (SELECT filemd5
                                                                                            FROM file)
                             ORDER BY filemd5""",
                             (packetid))
@@ -93,7 +93,7 @@ class SearchResultService:
         while j < len(searchResults):             
             database.execute("""SELECT ipp2p, pp2p
                                 FROM searchresult
-                                WHERE packetid = %s AND myResult = 'False' AND filemd5 = %s""", (packetid, searchResults[j].filemd5))
+                                WHERE packetid = %s AND myResult = 'F' AND filemd5 = %s""", (packetid, searchResults[j].filemd5))
             
             try:                       
                 while True:
