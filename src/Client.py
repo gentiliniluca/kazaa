@@ -238,7 +238,7 @@ class Client:
         #il valore di choice e' incrementato di uno
         choice = int(raw_input("\t  Scegliere il numero del peer da cui scaricare (0 annulla): ")) 
         if(choice > 0):
-            sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)  
+            sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM) 
             sock.connect((searchResults[choice - 1].ipp2p, int(searchResults[choice - 1].pp2p)))
             sendingString = "RETR" + searchResults[choice - 1].filemd5
             #sock.send(sendingString.encode())
