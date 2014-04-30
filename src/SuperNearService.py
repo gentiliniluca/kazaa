@@ -1,5 +1,6 @@
 import SuperNear
 import DBException
+import sys
 
 class SuperNearService:
     
@@ -21,7 +22,7 @@ class SuperNearService:
     
     @staticmethod
     def getSuperNear(database, ipp2p, pp2p):
-        
+        print("entro")
         database.execute("""SELECT idsupernear, ipp2p, pp2p
                             FROM supernear
                             WHERE ipp2p = %s AND pp2p = %s""",
@@ -48,6 +49,7 @@ class SuperNearService:
                 superNears.append(superNear)
         except:
             pass
+            #print (sys.exc_info())
                 
         return superNears
     
