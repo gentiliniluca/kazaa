@@ -339,7 +339,7 @@ class Server:
             j = 0
             while j < len(searchResults[i].peers):
                 sendingString = sendingString + searchResults[i].peers[j].ipp2p
-                sendingString = sendingString + searchResults[i].peers[j].pp2p
+                sendingString = sendingString + Util.Util.adattaStringa(5,str(searchResults[i].peers[j].pp2p))
                 
                 j = j + 1
             i = i + 1
