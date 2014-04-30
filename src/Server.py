@@ -84,7 +84,7 @@ class Server:
                 i = 0
                 while i < len(vicini):
                     if(vicini[i].ipp2p != ipp2p and vicini[i].pp2p != pp2p):
-                        print("\t\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                        print("\t\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p)
                         
                         try:
                             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
@@ -308,7 +308,7 @@ class Server:
         i = 0
         while i < len(vicini):           
             try:
-                print("\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                print("\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p)
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.connect((vicini[i].ipp2p, int(vicini[i].pp2p)))
                 sock.send(sendingString.encode())
