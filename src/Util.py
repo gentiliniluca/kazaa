@@ -11,14 +11,14 @@ class Util:
     
     global IPSuperPeer
     IPSuperPeer="fd00:0000:0000:0000:84a4:d754:ff92:f74e"
-    
+ 
     global PORTSuperPeer
     PORTSuperPeer=8000
     
     global USERNAME
-    USERNAME = "root"
+    USERNAME = "p2pAdmin"
     global PASSWORD
-    PASSWORD = "lucaluca"
+    PASSWORD = "p2pAdmin"
     
     global TTL
     TTL = 2
@@ -36,7 +36,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/luca/Desktop/Kazaa/src/FileCondivisi/"
+    LOCAL_PATH = "/home/giacomo/Immagini/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):

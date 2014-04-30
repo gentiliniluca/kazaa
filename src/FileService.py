@@ -11,7 +11,7 @@ class FileService:
             file.filename = filename            
             file.update(database)
             
-            print("MD5 already registered. Filename changed: '" + file.filename + "'")
+            print("\t\t\t\t\t\t\t->MD5 already registered. Filename changed: '" + file.filename + "'")
         except:
             pass
               

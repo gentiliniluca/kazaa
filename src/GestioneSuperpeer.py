@@ -107,7 +107,7 @@ class GestioneSuperpeer:
 
                     except Exception as e: 
                         print e
-                        print("Errore ricezione lato server")
+                        print("\t\t\t\t\t\tErrore ricezione lato server")
 
                     finally:
                         clientSocket.close() 

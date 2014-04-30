@@ -45,9 +45,9 @@ class Server:
         
         stringa_ricevuta_server = clientSocket.recv(SIZE)        
         if stringa_ricevuta_server == "":
-            print("Socket vuota")
+            print("\t\t\t\t\t\tSocket vuota")
         else:      
-            print("Pacchetto ricevuto: " + stringa_ricevuta_server)
+            print("\t\t\t\t\t\tPacchetto ricevuto: " + stringa_ricevuta_server)
         return stringa_ricevuta_server
     
     @staticmethod
@@ -57,7 +57,7 @@ class Server:
         pp2p = receivedString[59:64]
         ttl = receivedString[64:66]
         
-        print("\t->Operazione ricerca vicini da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
+        print("\t\t\t\t\t\t\t->Operazione ricerca vicini da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
         
         conn_db = Connessione.Connessione()
         try:
@@ -72,7 +72,7 @@ class Server:
             
             #se TTL > 1 inoltro il pacchetto ricevuto anche ai vicini
             if(int(ttl) > 1):                
-                print("\t->Inoltro messaggio ai vicini")                
+                print("\t\t\t\t\t\t\t->Inoltro messaggio ai vicini")                
                 newTTL = int(ttl) - 1 
                 
                 conn_db = Connessione.Connessione()
@@ -84,7 +84,7 @@ class Server:
                 i = 0
                 while i < len(vicini):
                     if(vicini[i].ipp2p != ipp2p and vicini[i].pp2p != pp2p):
-                        print("\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                        print("\t\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
                         
                         try:
                             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
@@ -93,7 +93,7 @@ class Server:
                             sock.send(sendingString.encode())                           
                         
                         except:
-                            print("\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
+                            print("\t\t\t\t\t\t\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
                     
                     i = i + 1
                     
@@ -104,7 +104,7 @@ class Server:
             sock.send(sendingString)
             sock.close()
             
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
 
     @staticmethod
     def superNearSearchResultHandler(receivedString):
@@ -112,7 +112,7 @@ class Server:
         ipp2p = receivedString[20:59]
         pp2p = receivedString[59:64]
         
-        print("\tOperazione inserimento nuovo supernodo vicino. Ip: " + ipp2p + ", Porta: " + pp2p)
+        print("\t\t\t\t\t\t\tOperazione inserimento nuovo supernodo vicino. Ip: " + ipp2p + ", Porta: " + pp2p)
         
         conn_db = Connessione.Connessione()
         
@@ -121,9 +121,9 @@ class Server:
             PacketService.PacketService.deleteExpiredPacket(c)
             packet = PacketService.PacketService.getPacket(c, pktid)            
             superNear = SuperNearService.SuperNearService.insertNewSuperNear(c, ipp2p, pp2p)
-            print("\t->OK")
+            print("\t\t\t\t\t\t\t->OK")
         except:
-            print("\t->Inserimento di vicino non effettuato")
+            print("\t\t\t\t\t\t\t->Inserimento di vicino non effettuato")
         finally:
             conn_db.esegui_commit()
             conn_db.chiudi_connessione()       
@@ -132,7 +132,7 @@ class Server:
     def loginHandler(receivedString, clientSocket):
         ipp2p = receivedString[4:43]
         pp2p = receivedString[43:48]
-        print("\tOperazione Login. Ip: " + ipp2p + ", Porta: " + pp2p)
+        print("\t\t\t\t\t\t\tOperazione Login. Ip: " + ipp2p + ", Porta: " + pp2p)
 
         conn_db = Connessione.Connessione()
         peer = PeerService.PeerService.insertNewPeer(conn_db.crea_cursore(), ipp2p, pp2p)
@@ -141,14 +141,14 @@ class Server:
         sessionID = peer.sessionid
 
         sendingString = "ALGI" + sessionID
-        print("\t->Restituisco: " + sendingString)
+        print("\t\t\t\t\t\t\t->Restituisco: " + sendingString)
         clientSocket.send(sendingString)
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
         
     @staticmethod
     def logoutHandler(receivedString, clientSocket):
         sessionID = receivedString[4:20]
-        print("\tOperazione LogOut. SessionID: " + sessionID)
+        print("\t\t\t\t\t\t\tOperazione LogOut. SessionID: " + sessionID)
     
         conn_db = Connessione.Connessione()
         peer = PeerService.PeerService.getPeer(conn_db.crea_cursore(), sessionID)
@@ -158,35 +158,35 @@ class Server:
         conn_db.chiudi_connessione()    
     
         sendingString = "ALGO" + Util.Util.adattaStringa(3, str(int(count))) 
-        print("\t->Restituisco: " + sendingString)
+        print("\t\t\t\t\t\t\t->Restituisco: " + sendingString)
         clientSocket.send(sendingString)
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
         
     @staticmethod
     def addFileHandler(receivedString):
         sessionID = receivedString[4:20]        
         fileMD5 = receivedString[20:36]        
         fileName = receivedString[36:136]      
-        print ("\tOperazione AddFile. SessionID: " + sessionID + ", MD5: " + fileMD5 + ", Nome: " + fileName)
+        print ("\t\t\t\t\t\t\tOperazione AddFile. SessionID: " + sessionID + ", MD5: " + fileMD5 + ", Nome: " + fileName)
     
         conn_db = Connessione.Connessione()
         FileService.FileService.insertNewFile(conn_db.crea_cursore(), sessionID, fileMD5, fileName.upper())
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
         
     @staticmethod
     def deleteFileHandler(receivedString):
         sessionID = receivedString[4:20]
         fileMD5 = receivedString[20:36]
-        print("\tOperazione DeleteFile. SessionID: " + sessionID + ", MD5: " + fileMD5)
+        print("\t\t\t\t\t\t\tOperazione DeleteFile. SessionID: " + sessionID + ", MD5: " + fileMD5)
 
         conn_db = Connessione.Connessione()
         file = FileService.FileService.getFile(conn_db.crea_cursore(), fileMD5)
         file.delete(conn_db.crea_cursore(), sessionID)
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
-        print("\t->OK")     
+        print("\t\t\t\t\t\t\t->OK")     
         
     @staticmethod
     def fileSearchHandler(receivedString):        
@@ -198,8 +198,8 @@ class Server:
         ricerca = Util.Util.elimina_spazi_iniziali_finali(ricerca_con_spazi) 
         ricerca = Util.Util.elimina_asterischi_iniziali_finali(ricerca)
         
-        print("\tOperazione ricerca file da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
-        print("\t->Ricercato: " + ricerca)
+        print("\t\t\t\t\t\t\tOperazione ricerca file da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
+        print("\t\t\t\t\t\t\t->Ricercato: " + ricerca)
         conn_db = Connessione.Connessione()
         try:
             pkt = PacketService.PacketService.getPacket(conn_db.crea_cursore(), pktid)
@@ -213,7 +213,7 @@ class Server:
             
             #se TTL > 1 inoltro il pacchetto ricevuto anche ai vicini
             if(int(ttl) > 1):                
-                print("\t->Inoltro messaggio ai vicini")                
+                print("\t\t\t\t\t\t\t->Inoltro messaggio ai vicini")                
                 newTTL = int(ttl) - 1 
                 
                 conn_db = Connessione.Connessione()
@@ -226,7 +226,7 @@ class Server:
                 while i < int(len(vicini)):
                     if(vicini[i].ipp2p != ipp2p and vicini[i].pp2p != pp2p):
                         print("\t\t->Inoltro al vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p)
-                        
+                      
                         try:
                             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                             sock.connect((vicini[i].ipp2p, int(vicini[i].pp2p)))
@@ -234,7 +234,7 @@ class Server:
                             sock.send(sendingString.encode())                           
                         
                         except:
-                            print("\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
+                            print("\t\t\t\t\t\t\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
                     
                     i = i + 1 
                   
@@ -267,7 +267,7 @@ class Server:
         filemd5 = receivedString[64:80]
         filename = receivedString[80:180]
         
-        print("\tRicevuto nuovo risultato di ricerca da Ip: " + ipp2p + ", Porta: " + pp2p + ", MD5: " + filemd5 + ", Nome File: " + filename + " (pktid: " + pktid + ")")
+        print("\t\t\t\t\t\t\tRicevuto nuovo risultato di ricerca da Ip: " + ipp2p + ", Porta: " + pp2p + ", MD5: " + filemd5 + ", Nome File: " + filename + " (pktid: " + pktid + ")")
         
         filename = Util.Util.elimina_spazi_iniziali_finali(filename)
         
@@ -277,7 +277,7 @@ class Server:
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
         
     @staticmethod
     def fileSearchRequestHandler(receivedString, clientSocket): 
@@ -287,7 +287,7 @@ class Server:
         searchString=Util.Util.elimina_spazi_iniziali_finali(searchString)
         searchString=Util.Util.elimina_asterischi_iniziali_finali(searchString)
         
-        print("\tRichiesta ricerca file dal peer SessionID: " + sessionID + ", Ricerca: " + searchString)         
+        print("\t\t\t\t\t\t\tRichiesta ricerca file dal peer SessionID: " + sessionID + ", Ricerca: " + searchString)         
         
         conn_db = Connessione.Connessione()        
         pkt = PacketService.PacketService.insertNewPacket(conn_db.crea_cursore(), None)
@@ -304,19 +304,19 @@ class Server:
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
-        print("\t->Avvio ricerca su supernodi vicini")
+        print("\t\t\t\t\t\t\t->Avvio ricerca su supernodi vicini")
         i = 0
         while i < len(vicini):           
             try:
-                print("\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                print("\t\t\t\t\t\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
                 sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                 sock.connect((vicini[i].ipp2p, int(vicini[i].pp2p)))
                 sock.send(sendingString.encode())
             except:
-                print("\t->Il vicino " + vicini[i].ipp2p + " " + vicini[i].pp2p + " non e' online")
+                print("\t\t\t\t\t\t\t->Il vicino " + vicini[i].ipp2p + " " + vicini[i].pp2p + " non e' online")
             i = i + 1  
         
-        print("\t->Attesa dei risultati...")
+        print("\t\t\t\t\t\t\t->Attesa dei risultati...")
         time.sleep(Util.SLEEPTIME)
         
         conn_db = Connessione.Connessione()
@@ -324,7 +324,7 @@ class Server:
         conn_db.esegui_commit()
         conn_db.chiudi_connessione()
         
-        print("\t->Trovati " + str(len(searchResults)) + " risultati. Invio al peer...")
+        print("\t\t\t\t\t\t\t->Trovati " + str(len(searchResults)) + " risultati. Invio al peer...")
         
         sendingString = "AFIN" + Util.Util.adattaStringa(3, str(len(searchResults)))
         
@@ -346,4 +346,4 @@ class Server:
             
         clientSocket.send(sendingString)
         
-        print("\t->OK")
+        print("\t\t\t\t\t\t\t->OK")
