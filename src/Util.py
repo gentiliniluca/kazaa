@@ -5,20 +5,20 @@ import random
 class Util:
     
     global HOST
-    HOST = "fd00:0000:0000:0000:84a4:d754:ff92:f74e"
+    HOST = "fd00:0000:0000:0000:29f9:6e45:8afc:b2f2"
     global PORT
-    PORT = 8000#3331
+    PORT = 8000
     
     global IPSuperPeer
-    IPSuperPeer="fd00:0000:0000:0000:84a4:d754:ff92:f74e"
+    IPSuperPeer="fd00:0000:0000:0000:29f9:6e45:8afc:b2f2"
  
     global PORTSuperPeer
-    PORTSuperPeer=8000
+    PORTSuperPeer= 8000
     
     global USERNAME
-    USERNAME = "p2pAdmin"
+    USERNAME = "root"
     global PASSWORD
-    PASSWORD = "p2pAdmin"
+    PASSWORD = "lucaluca"
     
     global TTL
     TTL = 2
@@ -36,7 +36,7 @@ class Util:
     MAX_NEARS = 2
     
     global LOCAL_PATH #percorso file condivisi
-    LOCAL_PATH = "/home/giacomo/Immagini/"
+    LOCAL_PATH = "/home/luca/Desktop/Kazaa/src/FileCondivisi/"
     
     @staticmethod
     def adattaStringa(lunghezzaFinale, stringa):
