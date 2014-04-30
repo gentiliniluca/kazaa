@@ -195,7 +195,8 @@ class Server:
         pp2p = receivedString[59:64]
         ttl = receivedString[64:66]
         ricerca_con_spazi = receivedString[66:86]
-        ricerca = Util.Util.elimina_spazi_iniziali_finali(ricerca_con_spazi)        
+        ricerca = Util.Util.elimina_spazi_iniziali_finali(ricerca_con_spazi) 
+        ricerca = Util.Util.elimina_asterischi_iniziali_finali(ricerca)
         
         print("\tOperazione ricerca file da supernodo Ip: " + ipp2p + ", Porta: " + pp2p + ", TTL: " + ttl + " (pktID: " + pktid + ")")
         print("\t->Ricercato: " + ricerca)
@@ -222,9 +223,9 @@ class Server:
                 conn_db.chiudi_connessione()    
                   
                 i = 0
-                while i < len(vicini):
+                while i < int(len(vicini)):
                     if(vicini[i].ipp2p != ipp2p and vicini[i].pp2p != pp2p):
-                        print("\t\t->Inoltro al vicino con Ip:" + vicini[i].pp2p + ", Porta:" + vicini[i].ipp2p)
+                        print("\t\t->Inoltro al vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p)
                         
                         try:
                             sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
@@ -235,7 +236,8 @@ class Server:
                         except:
                             print("\t\t->Il vicino con Ip:" + vicini[i].ipp2p + ", Porta:" + vicini[i].pp2p + " non e' online")
                     
-                    i = i + 1     
+                    i = i + 1 
+                  
             
             #in ogni caso rispondo con l'elenco dei file del mio cluster
             conn_db = Connessione.Connessione()
@@ -248,7 +250,7 @@ class Server:
             while i < len(files):
                 j = 0
                 while j < len(files[i].peers):                 
-                    sendingString = "AQUE" + pktid + files[i].peers[j].ipp2 + Util.Util.adattaStringa(5, files[i].peers[j].pp2p) + files[i].filemd5 + Util.Util.adattaStringa(100, files[i].filename)
+                    sendingString = "AQUE" + pktid + files[i].peers[j].ipp2p + Util.Util.adattaStringa(5, files[i].peers[j].pp2p) + files[i].filemd5 + Util.Util.adattaStringa(100, files[i].filename)
                     sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
                     sock.connect((ipp2p, int(pp2p)))
                     sock.send(sendingString)
