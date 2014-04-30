@@ -5,12 +5,12 @@ import random
 class Util:
     
     global HOST
-    HOST = "fd00:0000:0000:0000:4444:7844:37e8:9eac"
+    HOST = "fd00:0000:0000:0000:84a4:d754:ff92:f74e"
     global PORT
     PORT = 8000#3331
     
     global IPSuperPeer
-    IPSuperPeer="fd00:0000:0000:0000:4444:7844:37e8:9eac"
+    IPSuperPeer="fd00:0000:0000:0000:84a4:d754:ff92:f74e"
     
     global PORTSuperPeer
     PORTSuperPeer=8000
