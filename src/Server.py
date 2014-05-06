@@ -270,6 +270,7 @@ class Server:
         print("\t\t\t\t\t\t\tRicevuto nuovo risultato di ricerca da Ip: " + ipp2p + ", Porta: " + pp2p + ", MD5: " + filemd5 + ", Nome File: " + filename + " (pktid: " + pktid + ")")
         
         filename = Util.Util.elimina_spazi_iniziali_finali(filename)
+        filename = Util.Util.elimina_asterischi_iniziali_finali(filename)
         
         conn_db = Connessione.Connessione()
         sr = SearchResultService.SearchResultService.insertNewSearchResult(conn_db.crea_cursore(), ipp2p, pp2p, filemd5, filename, pktid, 'F')
