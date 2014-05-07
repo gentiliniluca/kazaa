@@ -1,11 +1,12 @@
 import SuperNear
 import DBException
+import Util
 import sys
 
 class SuperNearService:
     
-    global MAXSUPERNEARS 
-    MAXSUPERNEARS = 3
+    #global MAXSUPERNEARS 
+    #MAXSUPERNEARS = 3
     
     @staticmethod
     def insertNewSuperNear(database, ipp2p, pp2p):
@@ -13,7 +14,7 @@ class SuperNearService:
         try:
             superNear = SuperNearService.getSuperNear(database, ipp2p, pp2p)
         except:            
-            if SuperNearService.getSuperNearsCount(database) < MAXSUPERNEARS:
+            if SuperNearService.getSuperNearsCount(database) < Util.MAXSUPERNEARS:
                 superNear = SuperNear.SuperNear(None, ipp2p, pp2p)
                 superNear.insert(database)
             else:
@@ -22,7 +23,7 @@ class SuperNearService:
     
     @staticmethod
     def getSuperNear(database, ipp2p, pp2p):
-        print("entro")
+        #print("entro")
         database.execute("""SELECT idsupernear, ipp2p, pp2p
                             FROM supernear
                             WHERE ipp2p = %s AND pp2p = %s""",

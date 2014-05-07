@@ -191,7 +191,7 @@ class Client:
                 print("occorenze md5: "+str(occorenze_md5))
 		
                 for i in range(0,occorenze_md5):
-                        print("ciao contatore: "+str(i))
+                        #print("ciao contatore: "+str(i))
                         filemd5=sock.recv(16)
                         print("md5: "+filemd5)
 			filename=sock.recv(100)
